@@ -1,6 +1,7 @@
 package kr.kwangan2.springmvcboard.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -12,5 +13,9 @@ public class BoardVO {
 	private String writer;
 	private Date regdate;
 	private Date updateDate;
+
 	private int replycnt;
+
+	private List<BoardAttachVO> attachList;
+
 }

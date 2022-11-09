@@ -2,26 +2,70 @@
   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@include file="../jsp/includes/header.jsp"%>
+<%@include file="../includes/header.jsp"%>
 
 
 <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header">Board Register</h1>
   </div>
+  <!-- /.col-lg-12 -->
 </div>
+<!-- /.row -->
+
+	<style>
+.uploadResult {
+	width: 100%;
+	background-color: gray;
+}
+
+.uploadResult ul {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.uploadResult ul li {
+	list-style: none;
+	padding: 10px;
+}
+
+.uploadResult ul li img {
+	width: 100px;
+}
+</style>
+
+<style>
+.bigPictureWrapper {
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top:0%;
+  width:100%;
+  height:100%;
+  background-color: gray; 
+  z-index: 100;
+}
+
+.bigPicture {
+  position: relative;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
 
 <div class="row">
-
-
   <div class="col-lg-12">
     <div class="panel panel-default">
 
-      <div class="panel-heading">Board Insert</div>
+      <div class="panel-heading">Board Register</div>
       <!-- /.panel-heading -->
       <div class="panel-body">
 
-        <form id="boardInsertForm" role="form" action="/board/boardInsertProc" method="post">
+        <form role="form" action="/includes/register" method="post">
           <div class="form-group">
             <label>Title</label> <input class="form-control" name='title'>
           </div>
@@ -34,16 +78,20 @@
           <div class="form-group">
             <label>Writer</label> <input class="form-control" name='writer'>
           </div>
-          <button id="boardInsertSubmitBtn" class="boardInsertBtns btn btn-default">Submit
+          <button type="submit" class="btn btn-default">Submit
             Button</button>
-          <button id="boardInsertResetBtn" class="boardInsertBtns btn btn-default">Reset Button</button>
+          <button type="reset" class="btn btn-default">Reset Button</button>
         </form>
 
       </div>
+      <!--  end panel-body -->
 
     </div>
+    <!--  end panel-body -->
   </div>
+  <!-- end panel -->
 </div>
+<!-- /.row -->
 
 
 <div class="row">
@@ -73,7 +121,6 @@
   <!-- end panel -->
 </div>
 <!-- /.row -->
-
 
 <script>
 
@@ -159,7 +206,7 @@ $(document).ready(function(e){
     }
     
     $.ajax({
-      url: 'board/uploadAjaxAction',
+      url: '/uploadAjaxAction',
       processData: false, 
       contentType: false,data: 
       formData,type: 'POST',
@@ -206,7 +253,7 @@ $(document).ready(function(e){
 		//image type
 		
 		if(obj.image){
-			var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/thumb_"+obj.uuid +"_"+obj.fileName);
+			var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
 			str += "<li data-path='"+obj.uploadPath+"'";
 			str +=" data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.image+"'"
 			str +" ><div>";
@@ -262,4 +309,6 @@ $(document).ready(function(e){
 });
 
 </script>
-<%@include file="../jsp/includes/footer.jsp"%>
+
+
+<%@include file="../includes/footer.jsp"%>

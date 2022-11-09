@@ -1,41 +1,83 @@
-CMD·Î ¿À¶óÅ¬ °èÁ¤ »ı¼º ¹× ±ÇÇÑ ºÎ¿©
-//
+[CMD]
+#sys ê³„ì •ìœ¼ë¡œ ì˜¤ë¼í´ ì ‘ì†¡í•˜ëŠ”ê±° ã…‹
 sqlplus system/password
 
-//»ç¿ëÀÚ °èÁ¤ »ı¼º
- create user springmvcboard identified by springmvcboard;
- 
- //connect, resource, dba¿¡ ´ëÇØ¼­ »ç¿ëÀÚ°èÁ¤¿¡°Ô ±ÇÇÑ ºÎ¿©
- grant connect, resource, dba to springmvcboard;
- 
- //Á¦¾àÁ¶°Ç ¼³Á¤
- CREATE SEQUENCE seq_board INCREMENT BY 1;
-//Å×ÀÌºí»ı¼º
+#ì‚¬ìš©ì ê³„ì • ìƒì„±
+create user springmvcboard identified by springmvcboard
+
+#ì‚¬ìš©ì ê¶Œí•œ ë¶€ì—¬
+grant connect, resource, dba to springmvcboard
+
+[DBeaver]
+#ì‹œí€€ìŠ¤ ìƒì„±
+CREATE SEQUENCE seq_board INCREMENT BY 1;
+
+#í…Œì´ë¸” ìƒì„±
 CREATE TABLE board(
-	bno number(10,0),
-	title varchar2(2000) NOT NULL,
-	content varchar2(4000) NOT NULL,
-	writr varchar2(200) NOT NULL,
-	regdate DATE DEFAULT sysdate ,
-	updatedate DATE DEFAULT sysdate
+ bno NUMBER(10,0) ,
+ title varchar2(2000) NOT NULL,
+ content varchar2(4000) NOT NULL ,
+ writer varchar2(200) NOT NULL ,
+ regdate DATE DEFAULT sysdate ,
+ updatedate DATE DEFAULT sysdate 
 );
-//comment Ãß°¡
-COMMENT ON COLUMN board.bno IS '¹øÈ£';
-COMMENT ON COLUMN board.title IS 'Á¦¸ñ';
-COMMENT ON COLUMN board.content IS '³»¿ë';
-COMMENT ON COLUMN board.writr IS 'ÀÛ¼ºÀÚ';
-COMMENT ON COLUMN board.regdate IS 'µî·ÏÀÏ½Ã';
-COMMENT ON COLUMN board.updatedate IS '¼öÁ¤ÀÏ½Ã';
 
-#pk¼³Á¤
-ALTER TABLE board ADD CONSTRAINTS pk_board PRIMARY KEY(bno);
+#ì»¬ëŸ¼ ì»¤ë©˜íŠ¸ ë¶€ì—¬
+COMMENT ON COLUMN  board.bno is'ë²ˆí˜¸';
+COMMENT ON COLUMN  board.bno is'ì œëª©';
+COMMENT ON COLUMN  board.bno is'ë‚´ìš©';
+COMMENT ON COLUMN  board.bno is'ì‘ì„±ì';
+COMMENT ON COLUMN  board.bno is'ë“±ë¡ì¼ì‹œ';
+COMMENT ON COLUMN  board.bno is'ìˆ˜ì •ì¼ì‹œ';
 
-#µ¥ÀÌÅÍ Ãß°¡
-INSERT INTO board(bno,title,content,writr) VALUES (seq_board.nextval,'Á¦¸ñ1','³»¿ë1','ÀÛ¼ºÀÚ1');
-INSERT INTO board(bno,title,content,writr) VALUES (seq_board.nextval,'Á¦¸ñ2','³»¿ë2','ÀÛ¼ºÀÚ2');
-INSERT INTO board(bno,title,content,writr) VALUES (seq_board.nextval,'Á¦¸ñ3','³»¿ë3','ÀÛ¼ºÀÚ3');
+#pkì„¤ì •
+ALTER table board ADD CONSTRAINTS pk_board PRIMARY key(bno);
+
+#ë°ì´í„° ë„£ê³  ì‚­ì œ
+TRUNCATE TABLE board;
+
+INSERT INTO board(bno, title, content, WRITER)
+VALUES (seq_board.nextval, 'ì œëª©1','ë‚´ìš©1','ì‘ì„±ì1')
+
+INSERT INTO board(bno, title, content, WRITER)
+VALUES (seq_board.nextval, 'ì œëª©2','ë‚´ìš©2','ì‘ì„±ì2')
+
+INSERT INTO board(bno, title, content, WRITER)
+VALUES (seq_board.nextval, 'ì œëª©3','ë‚´ìš©3','ì‘ì„±ì3')
 
 
+
+CREATE TABLE tbl_sample1(col1 varchar2(500));
+
+ALTER TABLE board add(replycnt NUMBER DEFAULT 0		);
+
+
+UPDATE 
+	board
+SET
+	replycnt=(
+		SELECT 
+			count(rno)
+		FROM
+			REPLY 
+		WHERE 
+			reply.BNO =board.BNO 
+	);
+
+
+SELECT * FROM board;
+
+CREATE TABLE tbl_attach(
+uuid varchar2(100) NOT NULL,
+uploadPath varchar2(200) NOT NULL,
+fileName varchar2(100) NOT NULL,
+filetype char(1) DEFAULT 'I',
+bno number(10,0)
+);
+
+ALTER TABLE TBL_ATTACH  ADD CONSTRAINT pk_attach PRIMARY KEY (uuid);
+
+ALTER TABLE TBL_ATTACH ADD CONSTRAINT fk_board_attach FOREIGN KEY (bno) REFERENCES board(bno);
 
 
 

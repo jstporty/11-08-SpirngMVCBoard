@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
-</div>
-</div>
+<html>
 <form id="actionForm" action="/board/list" method="get">
    <input type="hidden" name="pageNum" value="${!empty param.pageNum ? param.pageNum : '1'}" />
    <input type='hidden' name='bno' value="${param.bno}" />
